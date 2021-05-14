@@ -25,7 +25,7 @@ export const postsReducer = (state = initialState, action: PostsAction): PostsSt
         case PostsActionTypes.CLEAR_POST_BY_ID:
             return {...state, postById: initialState.postById}
         case PostsActionTypes.FETCH_POST_BY_ID_SUCCESS:
-            return {...state, loading: false, postById: action.payload}
+            return {...state, loading: false, postById: {...action.payload,}}
         case PostsActionTypes.FETCH_POST_BY_ID_ERROR:
             return {...state, loading: false, error: action.payload}
         case PostsActionTypes.CREATE_POST:

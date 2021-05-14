@@ -10,6 +10,7 @@ export interface PostsState {
     }
 }
 
+
 export enum PostsActionTypes {
     FETCH_POSTS = 'FETCH_POSTS',
     FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS',
@@ -48,7 +49,12 @@ interface clearPostByIdPage {
 }
 interface FetchPostByIdSuccessAction {
     type: PostsActionTypes.FETCH_POST_BY_ID_SUCCESS;
-    payload: {};
+    payload:  {
+        id:number;
+        title:string;
+        body:string;
+        comments:any[];
+    };
 }
 interface FetchPostByIdErrorAction {
     type: PostsActionTypes.FETCH_POST_BY_ID_ERROR;
