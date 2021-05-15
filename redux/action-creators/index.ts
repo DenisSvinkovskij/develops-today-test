@@ -2,40 +2,7 @@ import {Dispatch} from "redux";
 import axios from "axios";
 import {PostsAction, PostsActionTypes} from "../../types/postsTypes";
 
-export const fetchPosts = () => {
-    return async (dispatch: Dispatch<PostsAction>) => {
-        try {
-            dispatch({type: PostsActionTypes.FETCH_POSTS})
-            const response = await axios.get('https://simple-blog-api.crew.red/posts')
 
-            dispatch({type: PostsActionTypes.FETCH_POSTS_SUCCESS, payload: response.data})
-
-        } catch (e) {
-            dispatch({
-                type: PostsActionTypes.FETCH_POSTS_ERROR,
-                payload: e.message
-            })
-        }
-    }
-}
-
-
-export const fetchPostById = (postId:string|string[]) => {
-    return async (dispatch: Dispatch<PostsAction>) => {
-        try {
-            dispatch({type: PostsActionTypes.FETCH_POST_BY_ID})
-            const response = await axios.get(`https://simple-blog-api.crew.red/posts/${postId}?_embed=comments`)
-
-            dispatch({type: PostsActionTypes.FETCH_POST_BY_ID_SUCCESS, payload: response.data})
-
-        } catch (e) {
-            dispatch({
-                type: PostsActionTypes.FETCH_POST_BY_ID_ERROR,
-                payload: e.message
-            })
-        }
-    }
-}
 
 export const clearPostByIdPage = () => {
     return async (dispatch: Dispatch<PostsAction>) => {

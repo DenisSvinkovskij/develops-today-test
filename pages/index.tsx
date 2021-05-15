@@ -1,10 +1,13 @@
 import Layout from '../components/Layout'
-import React,{useEffect} from 'react'
-// import {fetchPosts} from '../redux/action-creators'
+import React from 'react'
 import {useTypedSelector} from '../hooks/useTypedSelector'
-import {useActions} from '../hooks/useActions'
 import styled from 'styled-components';
 import Link from "next/link";
+import {PostsActionTypes} from '../types/postsTypes'
+import { NextPage } from 'next'
+import {wrapper} from '../redux'
+import axios from "axios";
+
 
 const List = styled.ul`
 display: grid;
@@ -31,13 +34,10 @@ display: -webkit-box;
 -webkit-box-orient: vertical;
 `
 
-const Home:React.FC = () => {
+const Home:NextPage = (props) => {
   const {posts} = useTypedSelector(state => state.posts)
-    const {fetchPosts} = useActions()
 
-    useEffect(() => {
-      fetchPosts()      
-    }, [])
+
   return (
     <Layout>
 
@@ -53,5 +53,22 @@ const Home:React.FC = () => {
   )
 }
 
+Home.getInitialProps = async({store}) => {
+  
+  try {
+    store.dispatch({type: PostsActionTypes.FETCH_POSTS})
+    const response = await axios.get('https://simple-blog-api.crew.red/posts')
 
-export default Home;
+    store.dispatch({type: PostsActionTypes.FETCH_POSTS_SUCCESS, payload: response.data})
+
+} catch (e) {
+  store.dispatch({
+        type: PostsActionTypes.FETCH_POSTS_ERROR,
+        payload: e.message
+    })
+}
+  return {custom: 'custom'}; 
+};
+
+
+export default wrapper.withRedux(Home)

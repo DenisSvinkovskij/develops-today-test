@@ -4,6 +4,10 @@ import React ,{ useEffect, useState } from 'react'
 import {useTypedSelector} from '../../hooks/useTypedSelector'
 import {useActions} from '../../hooks/useActions'
 import styled from 'styled-components';
+import {PostsActionTypes} from '../../types/postsTypes'
+import { NextPage } from 'next'
+import {wrapper} from '../../redux'
+import axios from "axios";
 
 const Container = styled.div`
 position: relative;
@@ -76,17 +80,15 @@ cursor: pointer;
 }
 `
 
-const PagePostId:React.FC = ()=> {
+const PagePostId:NextPage = ()=> {
     const router = useRouter()
     const { postId } = router.query
     const { postById } = useTypedSelector(state => state.posts)
-    const {fetchPostById,clearPostByIdPage,deletePost,addComment} = useActions()
+    const {clearPostByIdPage,deletePost,addComment} = useActions()
     const [comment, setComment] = useState('')
 
     useEffect(() => {
-        if (postId) {
-            fetchPostById(postId)
-        }
+
         return ()=>{
             clearPostByIdPage()
         }
@@ -123,4 +125,26 @@ const PagePostId:React.FC = ()=> {
     </Layout>
     )
 }
-export default PagePostId
+
+
+
+PagePostId.getInitialProps = async({store, query}) => {
+  
+    try {
+        store.dispatch({type: PostsActionTypes.FETCH_POST_BY_ID})
+        const response = await axios.get(`https://simple-blog-api.crew.red/posts/${query.postId}?_embed=comments`)
+        console.log(response);
+        
+        store.dispatch({type: PostsActionTypes.FETCH_POST_BY_ID_SUCCESS, payload: response.data})
+
+    } catch (e) {
+        store.dispatch({
+            type: PostsActionTypes.FETCH_POST_BY_ID_ERROR,
+            payload: e.message
+        })
+    }
+    return {custom: 'custom'}; 
+  };
+  
+  
+  export default wrapper.withRedux(PagePostId)

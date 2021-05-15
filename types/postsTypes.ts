@@ -27,7 +27,8 @@ export enum PostsActionTypes {
     DELETE_POST_ERROR = 'DELETE_POST_ERROR',
     ADD_COMMENT = 'ADD_COMMENT',
     ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS',
-    ADD_COMMENT_ERROR = 'ADD_COMMENT_ERROR'
+    ADD_COMMENT_ERROR = 'ADD_COMMENT_ERROR',
+    HYDRATE = '__NEXT_REDUX_WRAPPER_HYDRATE__'
 }
 interface FetchPostsAction {
     type: PostsActionTypes.FETCH_POSTS
@@ -98,6 +99,11 @@ interface AddCommentErrorAction {
     payload: string;
 }
 
+interface Hydrate {
+    type: PostsActionTypes.HYDRATE;
+    payload: any;
+}
+
 export type PostsAction =
     FetchPostsAction
     | FetchPostsSuccessAction
@@ -115,3 +121,4 @@ export type PostsAction =
     | AddCommentAction
     | AddCommentSuccessAction
     | AddCommentErrorAction
+    | Hydrate

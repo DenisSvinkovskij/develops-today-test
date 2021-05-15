@@ -1,4 +1,5 @@
 import {PostsAction, PostsActionTypes, PostsState} from "../../types/postsTypes";
+import {HYDRATE} from 'next-redux-wrapper';
 
 const initialState: PostsState = {
     posts: [],
@@ -14,6 +15,11 @@ const initialState: PostsState = {
 
 export const postsReducer = (state = initialState, action: PostsAction): PostsState => {
     switch (action.type) {
+        // case HYDRATE:
+        //     return {
+        //         ...state,
+        //         posts: action.payload,
+        //     };
         case PostsActionTypes.FETCH_POSTS:
             return {...state, loading: true}
         case PostsActionTypes.FETCH_POSTS_SUCCESS:
